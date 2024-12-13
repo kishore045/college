@@ -1,0 +1,110 @@
+.clearfix {
+  @include clearfix();
+}
+// Form validation
+//
+// Provide feedback to users when form field values are valid or invalid. Works
+// primarily for client-side validation via scoped `:invalid` and `:valid`
+// pseudo-classes but also includes `.is-invalid` and `.is-valid` classes for
+// server-side validation.
+
+// scss-docs-start form-validation-states-loop
+@each $state, $data in $form-validation-states {
+  @include form-validation-state($state, $data...);
+}
+// scss-docs-end form-validation-states-loop
+// Shorthand
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $zindex-fixed;
+}
+
+.fixed-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-fixed;
+}
+
+// Responsive sticky top
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .sticky#{$infix}-top {
+      position: sticky;
+      top: 0;
+      z-index: $zindex-sticky;
+    }
+  }
+}
+// Credit: Nicolas Gallagher and SUIT CSS.
+
+.ratio {
+  position: relative;
+  width: 100%;
+
+  &::before {
+    display: block;
+    padding-top: var(--#{$variable-prefix}aspect-ratio);
+    content: "";
+  }
+
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@each $key, $ratio in $aspect-ratios {
+  .ratio-#{$key} {
+    --#{$variable-prefix}aspect-ratio: #{$ratio};
+  }
+}
+//
+// Stretched link
+//
+
+.stretched-link {
+  &::#{$stretched-link-pseudo-element} {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $stretched-link-z-index;
+    content: "";
+  }
+}
+//
+// Text truncation
+//
+
+.text-truncate {
+  @include text-truncate();
+}
+//
+// Visually hidden
+//
+
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  @include visually-hidden();
+}
+// scss-docs-start clearfix
+@mixin clearfix() {
+  &::after {
+    display: block;
+    clear: both;
+    content: "";
+  }
+}
+// scss-docs-end clearfix
